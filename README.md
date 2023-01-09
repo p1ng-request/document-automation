@@ -17,4 +17,4 @@ ffmpeg -i source.mov -vf "fps=10,scale=1000:-1:flags=lanczos" -c:v pam \
 ```
 
 ## Handy scripts
-+ check-dead-links.py: A python script to check the dead links of a given web domain.
++ [check-dead-links.py](https://github.com/p1ng-request/automation-scripts-best-pracitces/blob/main/check-dead-links.py): A python script to check the dead links of a given web domain.
