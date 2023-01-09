@@ -63,7 +63,7 @@ def crawl_site(url):
         queue.append(href)
         visited.add(href)
   if not dead_links:
-    print('No broken links found!')
+    print('No dead links found!')
   else:
     for link, page in dead_links:
       print(f'Dead link {link} found on page {page}')
