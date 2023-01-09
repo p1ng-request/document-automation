@@ -19,7 +19,7 @@ def find_dead_links(url):
   for link in links:
     href = link.get('href')
     if not check_link(href):
-      dead_links.append(href)
+      dead_links.append((href, url))
   return dead_links
 
 def crawl_site(url):
@@ -30,7 +30,8 @@ def crawl_site(url):
     href = link.get('href')
     if href.startswith(url):
       dead_links = find_dead_links(href)
-      print(f'Dead links on {href}: {dead_links}')
+      for link, page in dead_links:
+        print(f'Dead link {link} found on page {page}')
 
 url = 'https://docs.kanaries.net'
 crawl_site(url)
