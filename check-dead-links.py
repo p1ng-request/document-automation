@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import urllib.parse
 
 def check_link(url, base_url):
   if url.startswith('http'):
@@ -13,7 +14,7 @@ def check_link(url, base_url):
       return False
   else:
     try:
-      r = requests.get(base_url + url)
+      r = requests.get(urllib.parse.urljoin(base_url, url))
       if r.status_code == 200:
         return True
       else:
@@ -38,8 +39,8 @@ def crawl_site(url):
   links = soup.find_all('a')
   for link in links:
     href = link.get('href')
-    if href.startswith('/'):
-      dead_links = find_dead_links(url + href, url)
+    if href.startswith(url):
+      dead_links = find_dead_links(href, url)
       for link, page in dead_links:
         print(f'Dead link {link} found on page {page}')
 
