@@ -21,4 +21,4 @@ ffmpeg -i source.mov -vf "fps=10,scale=1000:-1:flags=lanczos" -c:v pam \
 + [npl-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/nlp-scan.py): Basic Docs automation tool in Python. Features:
 ++ Scan all the .md files in a given directory and all the sub-directories.
 ++ Use machine learning models to classify the documentation and make suggestions based on the classification results.
-++ Analyze the documentation's readability using a readability test such as the Flesch–Kincaid readability test, and make suggestions to improve the readability score.
+++ Analyze the documentation's readability using a readability test such as the Flesch-Kincaid readability test and the Coleman-Liau index to evaluate the readability of the documentation and make suggestions for improvements.
