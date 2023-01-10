@@ -3,8 +3,6 @@ import re
 import ast
 import nltk
 from textstat.textstat import textstat
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import LinearSVC
 
 def score_documentation(documentation: str) -> float:
     # Split the documentation into sentences using NLTK's sent_tokenize() function
@@ -21,39 +19,21 @@ def score_documentation(documentation: str) -> float:
     return score
 
 def suggest_improvements(documentation: str):
-    # suggestions for improvement
     suggestions = []
-    
-    # Use the Flesch–Kincaid readability test
-    score = textstat.flesch_kincaid_grade(documentation)
-    if score > 12:
+    # Compute the Flesch-Kincaid readability test
+    fk_score = textstat.flesch_kincaid_grade(documentation)
+    coleman_score = textstat.coleman_liau_index(documentation)
+    if fk_score > 18:
         suggestions.append("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.")
-    elif score < 6:
+    elif fk_score < 10:
+        suggestions.append("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.")
+    if coleman_score > 18:
+        suggestions.append("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.")
+    elif coleman_score < 12:
         suggestions.append("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.")
     
-    # Prepare the classification model
-    tfidf = TfidfVectorizer()
-    clf = LinearSVC()
-    
-    # Train the model on a set of labeled documents
-    X_train = ["This is a positive document", "This is a negative document", "This document is neutral"]
-    y_train = ["positive", "negative", "neutral"]
-    X_train = tfidf.fit_transform(X_train)
-    clf.fit(X_train, y_train)
-    
-    # Vectorize and classify the new document
-    X_new = tfidf.transform([documentation])
-    y_pred = clf.predict(X_new)[0]
-    
-    # Make suggestions based on the classification results
-    if y_pred == "positive":
-        suggestions.append("The document appears to be positive. Keep up the good work!")
-    elif y_pred == "negative":
-        suggestions.append("The document appears to be negative. Consider revising it to be more positive.")
-    elif y_pred == "neutral":
-        suggestions.append("The document appears to be neutral. Consider adding more opinion or emotion to it.")
-    
     return suggestions
+
 
 
 def scan_documentation(path: str) -> float:
@@ -104,7 +84,7 @@ def scan_all_documentations(root_dir: str):
     return scores
 
 def main():
-    root_dir = '/Users/Documents/'
+    root_dir = '/path'
     scores = scan_all_documentations(root_dir)
     # print(scores)
 
