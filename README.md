@@ -7,9 +7,11 @@
 + Use machine learning models to classify the documentation and make suggestions based on the classification results.
 + Generate a Flesch-Kincaid readability test score for each doc.
 
-[deeper-npl-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/deeper-nlp-scan.py): Deeper scan for docs
-+ Use readability statistics to identify specific areas of the document that are difficult to understand
-+ Tokenize the text into sentences and then compute the Flesch-Kincaid Reading Ease score for each sentence. 
+[deeper-npl-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/deeper-nlp-scan.py): Scan docs using NLP
++ Utilizing natural language processing(NLP) techniques to determine complicated words by breaking down the text into individual sentences, followed by computing the Flesch-Kincaid Reading Ease score for each sentence to evaluate readability.
+
+[deeper-ner-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/deeper-ner-scan.py): Scan docs using NER
++ Apply named entity recognition (NER) to identify specific entities within the text and make suggestions for improvements.
 
 # Common best pracitces
 
