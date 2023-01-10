@@ -4,7 +4,9 @@ import ast
 import nltk
 from textstat.textstat import textstat
 from textblob import TextBlob
-
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.tokenize import sent_tokenize, word_tokenize
+nltk.download('vader_lexicon')
 
 def score_documentation(documentation: str) -> float:
     # Split the documentation into sentences using NLTK's sent_tokenize() function
@@ -22,17 +24,19 @@ def score_documentation(documentation: str) -> float:
 
 from textstat.textstat import textstat
 
+
 def suggest_improvements(documentation: str):
     suggestions = []
-    # Split the documentation into sentences
+    # Tokenize the text into sentences
     sentences = nltk.sent_tokenize(documentation)
-    
     for sentence in sentences:
-        score = textstat.flesch_reading_ease(sentence)
-        if score < 40:
-            suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
+        # Perform named entity recognition
+        entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
+        for entity in entities:
+            if hasattr(entity, 'label'):
+                if entity.label() == 'PERSON':
+                    suggestions.append("The use of proper names such as "+str(entity)+" can sometimes be confusing and can be replaced with more general terms.")
     return suggestions
-
 
 
 def scan_documentation(path: str) -> float:
