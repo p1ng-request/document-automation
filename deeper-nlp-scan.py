@@ -83,7 +83,7 @@ def scan_all_documentations(root_dir: str):
     return scores
 
 def main():
-    root_dir = '/Users/Documents'
+    root_dir = '/path'
     scores = scan_all_documentations(root_dir)
     # print(scores)
 
