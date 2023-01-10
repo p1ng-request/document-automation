@@ -22,6 +22,6 @@ ffmpeg -i source.mov -vf "fps=10,scale=1000:-1:flags=lanczos" -c:v pam \
 ++ Scan all the .md files in a given directory and all the sub-directories.
 ++ Use machine learning models to classify the documentation and make suggestions based on the classification results.
 ++ Generate a Flesch-Kincaid readability test score for each doc.
-+ [deeper-npl-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/deeper-nlp-scan.py): Deeper scan of docs
-+ + use readability statistics to identify specific areas of the document that are difficult to understand
-+ + tokenize the text into sentences and then compute the Flesch-Kincaid Reading Ease score for each sentence. 
++ [deeper-npl-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/deeper-nlp-scan.py): Deeper scan for docs
+++ Use readability statistics to identify specific areas of the document that are difficult to understand
+++ Tokenize the text into sentences and then compute the Flesch-Kincaid Reading Ease score for each sentence. 
