@@ -17,4 +17,8 @@ ffmpeg -i source.mov -vf "fps=10,scale=1000:-1:flags=lanczos" -c:v pam \
 ```
 
 # Handy scripts
-+ [check-dead-links.py](https://github.com/p1ng-request/automation-scripts-best-pracitces/blob/main/check-dead-links.py): A python script to scan dead links from a given web domain.
++ [check-dead-links.py](https://github.com/p1ng-request/automation-scripts-best-pracitces/blob/main/check-dead-links.py): A Python script to scan dead links from a given web domain.
++ [npl-scan.py](https://github.com/p1ng-request/automation-scripts/blob/main/nlp-scan.py): Basic Docs automation tool in Python. Features:
+++ Scan all the .md files in a given directory and all the sub-directories.
+++ Use machine learning models to classify the documentation and make suggestions based on the classification results.
+++ Analyze the documentation's readability using a readability test such as the Flesch–Kincaid readability test, and make suggestions to improve the readability score.
