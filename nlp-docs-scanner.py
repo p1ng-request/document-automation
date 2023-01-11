@@ -98,6 +98,18 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
         suggestions.append(("The document appears to be written in a subjective tone.", "Objectivity"))
     if clear_score < 30:
         suggestions.append(("The document appears to be difficult to read. Consider simplifying the language.", "Readability"))
+        # Split the documentation into sentences
+    sentences = nltk.sent_tokenize(documentation)
+    for sentence in sentences:
+        score = textstat.flesch_reading_ease(sentence)
+        if score < 40:
+            suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
+        # Perform named entity recognition
+        # entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
+        # for entity in entities:
+        #     if hasattr(entity, 'label'):
+        #         if entity.label() == 'PERSON':
+        #             suggestions.append("The use of proper names such as "+str(entity)+" can sometimes be confusing and can be replaced with more general terms.")
     return suggestions
 
 def scan_documentation(file: str) -> float:
