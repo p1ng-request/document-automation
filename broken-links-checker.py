@@ -19,7 +19,7 @@ def check_link(url, base_url):
 def crawl_site(url):
     queue = deque([url])
     visited = set()
-    dead_links = []
+    broken_links = []
     session = requests.Session()
     while queue:
         current_url = queue.popleft()
@@ -41,8 +41,8 @@ def crawl_site(url):
             else:
                 continue 
             if not check_link(href, parsed_url):
-                dead_links.append((href, current_url))
-                print(f'Dead link {href} found on page {current_url}')
+                broken_links.append((href, current_url))
+                print(f'Broken link {href} found on page {current_url}')
         for link in links:
             href = link.get('href')
             if parsed_url.hostname == urllib.parse.urlparse(href).hostname and href not in visited:
