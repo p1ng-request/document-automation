@@ -5,6 +5,7 @@ from textstat.textstat import textstat
 from typing import List
 from pathlib import Path
 import markdown
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
@@ -30,6 +31,23 @@ def remove_header(documentation: str):
             break
     return "\n".join(lines[end+1:])
 
+def check_tone(documentation: str):
+    # Create an instance of the sentiment intensity analyzer
+    sentiment_analyzer = SentimentIntensityAnalyzer()
+    # Get the sentiment score of the documentation
+    sentiment_score = sentiment_analyzer.polarity_scores(documentation)
+    print(sentiment_score)
+    if sentiment_score['compound'] < -0.5:
+        print("The documentation is written in a very negative tone.")
+    elif sentiment_score['compound'] < 0:
+        print("The documentation is written in a negative tone.")
+    elif sentiment_score['compound'] == 0:
+        print("The documentation is written in a neutral tone.")
+    elif sentiment_score['compound'] > 0:
+        print("The documentation is written in a positive tone.")
+    elif sentiment_score['compound'] > 0.5:
+        print("The documentation is written in a very positive tone.")
+
 def score_documentation(documentation: str) -> float:
     """
     Compute the Flesch-Kincaid readability test
@@ -37,14 +55,14 @@ def score_documentation(documentation: str) -> float:
     fk_score = textstat.flesch_kincaid_grade(documentation)
     return fk_score
 
-def suggest_improvements(documentation: str) -> List[str]:
-    """
-    Provide suggestions for improving the documentation's readability.
-    """
+def suggest_improvements(documentation: str):
     suggestions = []
     # Compute the Flesch-Kincaid readability test
     fk_score = textstat.flesch_kincaid_grade(documentation)
     coleman_score = textstat.coleman_liau_index(documentation)
+    # Check if the documentation has an objective tone
+    objective_score = textstat.automated_readability_index(documentation)
+    clear_score = textstat.flesch_reading_ease(documentation)
     if fk_score > 18:
         suggestions.append("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.")
     elif fk_score < 10:
@@ -53,6 +71,13 @@ def suggest_improvements(documentation: str) -> List[str]:
         suggestions.append("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.")
     elif coleman_score < 12:
         suggestions.append("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.")
+    if objective_score > 14:
+        suggestions.append("The document appears to be written in a more technical or advanced language. Consider simplifying the language.")
+    if objective_score < 8:
+        suggestions.append("The document appears to be written in a subjective or non-technical language. Consider changing the language.")
+
+    if clear_score < 50:
+        suggestions.append("The document appears not to be clear or direct. Consider using simpler words.")
     # Split the documentation into sentences
     sentences = nltk.sent_tokenize(documentation)
     for sentence in sentences:
@@ -62,10 +87,12 @@ def suggest_improvements(documentation: str) -> List[str]:
         # Perform named entity recognition
         entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
         for entity in entities:
-            if hasattr(entity, 'label_'):
-                if entity.label_ == 'PERSON':
-                    suggestions.append("The use of proper names such as "+" ".join(list(map(lambda x: x[0], entity.leaves())))+" can sometimes be confusing and can be replaced with more general terms.")
+            if hasattr(entity, 'label'):
+                if entity.label() == 'PERSON':
+                    suggestions.append("The use of proper names such as "+str(entity)+" can sometimes be confusing and can be replaced with more general terms.")
+
     return suggestions
+
 
 def scan_documentation(file: str) -> float:
     # read the documentation file
@@ -84,15 +111,9 @@ def scan_documentation(file: str) -> float:
     # remove any invalid characters from the documentation string
     documentation = re.sub(r'[^\x00-\x7F]+', '', documentation)
 
-    # remove links that starts with ( and ends with )
-    documentation = re.sub(r'\([^)]*\)', '', documentation)
-
-    # split the documentation string into a list of lines
-    lines = documentation.split('\n')
-
-    # join the remaining lines back into a single string
-    documentation = '\n'.join(lines)
-    
+    # check the tone of the documentation
+    check_tone(documentation)
+   
     # score the documentation
     score = score_documentation(documentation)
     
@@ -104,6 +125,9 @@ def scan_documentation(file: str) -> float:
     for suggestion in suggestions:
         print(suggestion)
     return score
+
+
+
 
 def scan_all_documentations(root_dir: str):
     scores = []
