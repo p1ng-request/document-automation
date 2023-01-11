@@ -102,7 +102,7 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
     sentences = nltk.sent_tokenize(documentation)
     for sentence in sentences:
         score = textstat.flesch_reading_ease(sentence)
-        if score < 40:
+        if score < 10:
             suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
         # Perform named entity recognition
         # entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
