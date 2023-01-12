@@ -177,7 +177,8 @@ def scan_all_documentations(root_dir: str):
 def main():
     root_dir = '/path/'
     scores = scan_all_documentations(root_dir)
-    # print(scores)
+    with open("output.txt", "w") as file:
+        file.write(check_tone(scores))
 
 if __name__ == '__main__':
     main()
