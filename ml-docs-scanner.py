@@ -1,28 +1,30 @@
 import os
 import re
 import nltk
-from textstat.textstat import textstat
-from typing import List
+import textstat
+from typing import List, Tuple
 from pathlib import Path
 import markdown
 from nltk.sentiment import SentimentIntensityAnalyzer
 from language_tool_python import LanguageTool
-import language_tool_python
-from textblob import TextBlob
+import textblob as tb
+from sklearn.feature_extraction.text import CountVectorizer
 
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
-    
-def clean_html(documentation: str):
-    # use a regular expression to remove any HTML tags from the documentation
+
+def clean_html(documentation: str) -> str:
+    # Removes any HTML tags from the documentation
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', documentation)
     return cleantext
 
-def parse_markdown(documentation: str):
+def parse_markdown(documentation: str) -> str:
+    # Convert markdown to html
     return markdown.markdown(documentation)
 
-def remove_header(documentation: str):
+def remove_header(documentation: str) -> str:
+    # Remove YAML front matter
     lines = documentation.split("\n")
     for i, line in enumerate(lines):
         if line.strip() == "---":
@@ -34,84 +36,82 @@ def remove_header(documentation: str):
             break
     return "\n".join(lines[end+1:])
 
-def check_tone(documentation: str):
+def check_tone(documentation: str) -> str:
+    # Check for Tone in the text
     # Create an instance of the sentiment intensity analyzer
     sentiment_analyzer = SentimentIntensityAnalyzer()
     # Get the sentiment score of the documentation
     sentiment_score = sentiment_analyzer.polarity_scores(documentation)
-    print(sentiment_score)
     if sentiment_score['compound'] < -0.5:
-        print("The documentation is written in a very negative tone.")
+        return "The documentation is written in a very negative tone."
     elif sentiment_score['compound'] < 0:
-        print("The documentation is written in a negative tone.")
+        return "The documentation is written in a negative tone."
     elif sentiment_score['compound'] == 0:
-        print("The documentation is written in a neutral tone.")
+        return "The documentation is written in a neutral tone."
     elif sentiment_score['compound'] > 0:
-        print("The documentation is written in a positive tone.")
+        return "The documentation is written in a positive tone."
     elif sentiment_score['compound'] > 0.5:
-        print("The documentation is written in a very positive tone.")
+        return "The documentation is written in a very positive tone."
 
 def score_documentation(documentation: str) -> float:
-    """
-    Compute the Flesch-Kincaid readability test
-    """
+    # Compute the Flesch-Kincaid readability test
     fk_score = textstat.flesch_kincaid_grade(documentation)
     return fk_score
 
-def suggest_improvements(documentation: str):
+
+def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
     suggestions = []
     # create an instance of the LanguageTool class
-    tool = language_tool_python.LanguageTool('en-US')
-    # check for grammar errors
-    grammar_errors = tool.check(documentation)
-    for error in grammar_errors:
-        context = error.context
-        suggestions.append(f"Grammar Error: {error.message} in sentence: {context}")
-    return suggestions
-
-
-    # check for spelling errors
-    textblob = TextBlob(documentation)
-    for word in textblob.words:
-        if word.spellcheck()[0][1] < 0.8:
-            suggestions.append("Spelling Error: " + word)
-
+    tool = LanguageTool('en-US')
     # Compute the Flesch-Kincaid readability test
-    fk_score = textstat.flesch_kincaid_grade(documentation)
+    fk_score = score_documentation(documentation)
     coleman_score = textstat.coleman_liau_index(documentation)
     # Check if the documentation has an objective tone
     objective_score = textstat.automated_readability_index(documentation)
     clear_score = textstat.flesch_reading_ease(documentation)
     if fk_score > 18:
-        suggestions.append("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.")
+        suggestions.append(("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.", "Readability"))
     elif fk_score < 10:
-        suggestions.append("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.")
+        suggestions.append(("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.", "Readability"))
     if coleman_score > 18:
-        suggestions.append("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.")
-    elif coleman_score < 12:
-        suggestions.append("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.")
-    if objective_score > 14:
-        suggestions.append("The document appears to be written in a more technical or advanced language. Consider simplifying the language.")
-    if objective_score < 8:
-        suggestions.append("The document appears to be written in a subjective or non-technical language. Consider changing the language.")
-
-    if clear_score < 50:
-        suggestions.append("The document appears not to be clear or direct. Consider using simpler words.")
-
+        suggestions.append(("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.", "Readability"))
+    elif coleman_score < 10:
+        suggestions.append(("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.", "Readability"))
+    if objective_score > 18:
+        suggestions.append(("The document appears to be written in an objective tone.", "Objectivity"))
+    elif objective_score < 10:
+        suggestions.append(("The document appears to be written in a subjective tone.", "Objectivity"))
+    if clear_score < 30:
+        suggestions.append(("The document appears to be difficult to read. Consider simplifying the language.", "Readability"))
     # Split the documentation into sentences
     sentences = nltk.sent_tokenize(documentation)
     for sentence in sentences:
         score = textstat.flesch_reading_ease(sentence)
-        if score < 40:
+        if score < 10:
             suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
-        # # Perform named entity recognition
+        # Perform named entity recognition
         # entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
         # for entity in entities:
         #     if hasattr(entity, 'label'):
         #         if entity.label() == 'PERSON':
-        #             suggestions.append("The use of proper names such as "+str(entity)+" can sometimes be confusing and can be replaced with more general terms.")
+        #             suggestions.append("The use of proper names such as "+str(entity)+" can sometimes be confusing and can be replaced with more general terms.", "Clearity")
+    # Term/Terminology-Consistency checker
+    terms_dict = {}
+    words = nltk.word_tokenize(documentation)
+    # Collect a large data set of terms
+    for word in words:
+        if word in terms_dict:
+            terms_dict[word] += 1
+        else:
+            terms_dict[word] = 1
+    # Check the consistency of the terms used in each sentence
+    sentences = nltk.sent_tokenize(documentation)
+    for sentence in sentences:
+        words = nltk.word_tokenize(sentence)
+        for word in words:
+            if word not in terms_dict:
+                suggestions.append(f"The word '{word}' is not consistent with the terms found in the rest of the documentation.", "Consistency")
     return suggestions
-
 def scan_documentation(file: str) -> float:
     # read the documentation file
     with open(file, 'r') as f:
@@ -158,7 +158,6 @@ def scan_all_documentations(root_dir: str):
             scores.extend(scan_all_documentations(subdir_path))
     return scores
 
-
 def main():
     root_dir = '/path'
     scores = scan_all_documentations(root_dir)
@@ -166,3 +165,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
