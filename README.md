@@ -11,7 +11,15 @@
 + Evalute **clearity**: Apply named entity recognition (NER) to identify specific words within the text and make suggestions for improvements.
 + Evalue the **tone**: Apply Sentiment analysis using Machine learning (ML) techniques.
 + Evalute the **consistency**: Analyze the text based on NLP and ML, which, detects terms and check consistency.
-> Note: Grammar check, spelling check & clearity check on a word-based level proven to be unreliable for generating too many false positives. Best pracitce: use grammarly instead.
+> Note 1: You are obligated to create a *terminology_dict.json* file in the following format:
+```json
+{
+    "word1": count1,
+    "word2": count2,
+    ...
+}
+```
+> Note 2: Grammar check, spelling check & clearity check on a word-based level proven to be unreliable for generating too many false positives. Best pracitce: use grammarly instead.
 + Sample promot:
 
 > File: test.md
