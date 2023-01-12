@@ -7,6 +7,7 @@ from pathlib import Path
 import markdown
 from nltk.sentiment import SentimentIntensityAnalyzer
 from language_tool_python import LanguageTool
+import json
 
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
@@ -103,23 +104,29 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
         #     if hasattr(entity, 'label'):
         #         if entity.label() == 'PERSON':
         #             suggestions.append("The use of proper names such as "+str(entity)+" can sometimes be confusing and can be replaced with more general terms.", "Clearity")
-    # Term/Terminology-Consistency checker
-    terms_dict = {}
-    words = nltk.word_tokenize(documentation)
-    # Collect a large data set of terms
-    for word in words:
-        if word in terms_dict:
-            terms_dict[word] += 1
-        else:
-            terms_dict[word] = 1
-    # Check the consistency of the terms used in each sentence
-    sentences = nltk.sent_tokenize(documentation)
-    for sentence in sentences:
-        words = nltk.word_tokenize(sentence)
-        for word in words:
-            if word not in terms_dict:
-                suggestions.append(f"The word '{word}' is not consistent with the terms found in the rest of the documentation.", "Consistency")
-    return suggestions
+        # Import the terminology dictionary from a file
+        with open('terminology_dict.json', 'r') as file:
+            terms_dict = json.load(file)
+        # Term/Terminology-Consistency checker
+        try:
+            with open("terminology_dict.txt", "r") as f:
+                terms_dict = json.load(f)
+        except FileNotFoundError:
+            print("Terminology dictionary file not found.")
+            return suggestions
+        except json.decoder.JSONDecodeError as e:
+            print("Error loading terminology dictionary file: ", e)
+            return suggestions
+
+        words = nltk.word_tokenize(documentation)
+        # Check the consistency of the terms used in each sentence
+        sentences = nltk.sent_tokenize(documentation)
+        for sentence in sentences:
+            words = nltk.word_tokenize(sentence)
+            for word in words:
+                if word not in terms_dict:
+                    suggestions.append(("The word '{}' is not consistent with the terms found in the rest of the documentation.".format(word), "Consistency"))
+        return suggestions
     
 def scan_documentation(file: str) -> float:
     # read the documentation file
