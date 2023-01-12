@@ -7,8 +7,6 @@ from pathlib import Path
 import markdown
 from nltk.sentiment import SentimentIntensityAnalyzer
 from language_tool_python import LanguageTool
-import textblob as tb
-from sklearn.feature_extraction.text import CountVectorizer
 
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
@@ -35,6 +33,12 @@ def remove_header(documentation: str) -> str:
             end = i + start + 1
             break
     return "\n".join(lines[end+1:])
+
+def remove_code_blocks(documentation: str) -> str:
+    # Removes any code blocks from the documentation
+    cleanr = re.compile('```.*?```|<.*?>')
+    cleantext = re.sub(cleanr, '', documentation, flags=re.DOTALL)
+    return cleantext
 
 def check_tone(documentation: str) -> str:
     # Check for Tone in the text
@@ -66,6 +70,10 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
     # Compute the Flesch-Kincaid readability test
     fk_score = score_documentation(documentation)
     coleman_score = textstat.coleman_liau_index(documentation)
+    # Check for grammar and spelling errors
+    grammar_errors = tool.check(documentation)
+    if grammar_errors:
+        suggestions.append(("There are grammatical and/or spelling errors in the document. Consider running the document through a grammar and spell checker.", "Grammar and Spelling"))
     # Check if the documentation has an objective tone
     objective_score = textstat.automated_readability_index(documentation)
     clear_score = textstat.flesch_reading_ease(documentation)
@@ -112,6 +120,7 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
             if word not in terms_dict:
                 suggestions.append(f"The word '{word}' is not consistent with the terms found in the rest of the documentation.", "Consistency")
     return suggestions
+    
 def scan_documentation(file: str) -> float:
     # read the documentation file
     with open(file, 'r') as f:
@@ -165,4 +174,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
