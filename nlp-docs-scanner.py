@@ -71,7 +71,6 @@ def score_documentation(documentation: str) -> float:
     fk_score = textstat.flesch_kincaid_grade(documentation)
     return fk_score
 
-
 def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
     suggestions = []
     # create an instance of the LanguageTool class
@@ -100,10 +99,11 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
         suggestions.append(("The document appears to be difficult to read. Consider simplifying the language.", "Readability"))
         # Split the documentation into sentences
     sentences = nltk.sent_tokenize(documentation)
-    for sentence in sentences:
-        score = textstat.flesch_reading_ease(sentence)
-        if score < 10:
-            suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
+    # Calculate Readability scores for each sentence
+    # for sentence in sentences:
+    #     score = textstat.flesch_reading_ease(sentence)
+    #     if score < 10:
+    #         suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
         # Perform named entity recognition
         # entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
         # for entity in entities:
@@ -144,9 +144,6 @@ def scan_documentation(file: str) -> float:
         print(suggestion)
     return score
 
-
-
-
 def scan_all_documentations(root_dir: str):
     scores = []
     for root, dirs, files in os.walk(root_dir):
@@ -160,7 +157,6 @@ def scan_all_documentations(root_dir: str):
             subdir_path = os.path.join(root, subdir)
             scores.extend(scan_all_documentations(subdir_path))
     return scores
-
 
 def main():
     root_dir = '/path'
