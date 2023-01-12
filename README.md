@@ -11,7 +11,7 @@
 + Evalute **clearity**: Apply named entity recognition (NER) to identify specific words within the text and make suggestions for improvements.
 + Evalue the **tone**: Apply Sentiment analysis using Machine learning (ML) techniques.
 + Evalute the **consistency**: Analyze the text based on NLP and ML, which, detects terms and check consistency.
-> Note 1: You are obligated to create a *terminology_dict.json* file in the following format:
+> Note 1: You are obligated to [create a *terminology_dict.json* file](https://github.com/p1ng-request/document-automation/blob/main/create-term-dic.py) in the following format:
 ```json
 {
     "word1": count1,
