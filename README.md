@@ -27,7 +27,7 @@
 ```bash
 ## prereq: python3, jre
 ## Install dependenceis:
-pip3 install nltk textstat markdown textblob language-tool-python
+pip3 install nltk textstat markdown textblob language-tool-python pyfiglet
 ```
 
 [ml-docs-scanner.py](https://github.com/p1ng-request/document-automation/blob/main/ml-docs-scanner.py): (Under construction)
