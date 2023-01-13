@@ -48,21 +48,20 @@ def check_tone(documentation: str) -> str:
     # Get the sentiment score of the documentation
     sentiment_score = sentiment_analyzer.polarity_scores(documentation)
     if sentiment_score['compound'] < -0.5:
-        return "The documentation is written in a very negative tone."
+        print("\033[1;31;40m The documentation is written in a very negative tone. \033[0m")
     elif sentiment_score['compound'] < 0:
-        return "The documentation is written in a negative tone."
+        print("\033[1;31;40m The documentation is written in a negative tone. \033[0m")
     elif sentiment_score['compound'] == 0:
-        return "The documentation is written in a neutral tone."
+        print("\033[1;33;40m The documentation is written in a neutral tone. \033[0m")
     elif sentiment_score['compound'] > 0:
-        return "The documentation is written in a positive tone."
+        print("\033[1;32;40m The documentation is written in a positive tone. \033[0m")
     elif sentiment_score['compound'] > 0.5:
-        return "The documentation is written in a very positive tone."
+        print("\033[1;32;40m The documentation is written in a very positive tone. \033[0m")
 
 def score_documentation(documentation: str) -> float:
     # Compute the Flesch-Kincaid readability test
     fk_score = textstat.flesch_kincaid_grade(documentation)
     return fk_score
-
 
 def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
     suggestions = []
@@ -74,29 +73,38 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
     # Check for grammar and spelling errors
     grammar_errors = tool.check(documentation)
     if grammar_errors:
+        print("\033[1;31;47m ✗ There are grammatical and/or spelling errors in the document. \033[0m \033[1;31;47m Consider running the document through a grammar and spell checker. \033[0m")
         suggestions.append(("There are grammatical and/or spelling errors in the document. Consider running the document through a grammar and spell checker.", "Grammar and Spelling"))
     # Check if the documentation has an objective tone
     objective_score = textstat.automated_readability_index(documentation)
     clear_score = textstat.flesch_reading_ease(documentation)
     if fk_score > 18:
+        print("\033[1;31;40m ✗ The document appears to be written at a higher reading level than the target audience. \033[0m \033[1;33;40m Consider simplifying the language. \033[0m")
         suggestions.append(("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.", "Readability"))
     elif fk_score < 10:
+        print("\033[1;32;40m ✗ The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary. \033[0m")
         suggestions.append(("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.", "Readability"))
     if coleman_score > 18:
+        print("\033[1;31;40m ✗ The document appears to be written at a higher reading level than the target audience. \033[0m \033[1;33;40m Consider simplifying the language. \033[0m")
         suggestions.append(("The document appears to be written at a higher reading level than the target audience. Consider simplifying the language.", "Readability"))
     elif coleman_score < 10:
+        print("\033[1;32;40m ✗ The document appears to be written at a lower reading level than the target audience. \033[0m \033[1;33;40m Consider using more complex vocabulary. \033[0m")
         suggestions.append(("The document appears to be written at a lower reading level than the target audience. Consider using more complex vocabulary.", "Readability"))
     if objective_score > 18:
+        print("\033[1;36;40m The document appears to be written in an objective tone. \033[0m")
         suggestions.append(("The document appears to be written in an objective tone.", "Objectivity"))
     elif objective_score < 10:
+        print("\033[1;36;40m The document appears to be written in a subjective tone. \033[0m")
         suggestions.append(("The document appears to be written in a subjective tone.", "Objectivity"))
     if clear_score < 30:
+        print("\033[1;31;40m ✗ The document appears to be difficult to read. Consider simplifying the language.\033[0m")
         suggestions.append(("The document appears to be difficult to read. Consider simplifying the language.", "Readability"))
     # Split the documentation into sentences
     sentences = nltk.sent_tokenize(documentation)
     for sentence in sentences:
         score = textstat.flesch_reading_ease(sentence)
         if score < 10:
+            print("\033[1;31;40m ✗ The sentence: '{}' has a low readability score of {}. \033[0m \033[1;33;40m Consider simplifying the language. \033[0m".format(sentence, score))
             suggestions.append("The sentence: '{}' has a low readability score of {}. Consider simplifying the language.".format(sentence, score))
         # Perform named entity recognition
         # entities = nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sentence)))
@@ -112,10 +120,10 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
             with open("terminology_dict.txt", "r") as f:
                 terms_dict = json.load(f)
         except FileNotFoundError:
-            print("Terminology dictionary file not found.")
+            print("\033[1;31;47mTerminology dictionary file not found.\033[0m")
             return suggestions
         except json.decoder.JSONDecodeError as e:
-            print("Error loading terminology dictionary file: ", e)
+            print("\033[1;31;47mError loading terminology dictionary file: {}\033[0m".format(e))
             return suggestions
 
         words = nltk.word_tokenize(documentation)
@@ -125,6 +133,7 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
             words = nltk.word_tokenize(sentence)
             for word in words:
                 if word not in terms_dict:
+                    print("\033[1;31;47m ✗ The word '{}' is not consistent with the terms found in the rest of the documentation.\033[0m".format(word))
                     suggestions.append(("The word '{}' is not consistent with the terms found in the rest of the documentation.".format(word), "Consistency"))
         return suggestions
     
