@@ -8,9 +8,14 @@ import markdown
 from nltk.sentiment import SentimentIntensityAnalyzer
 from language_tool_python import LanguageTool
 import json
+from pyfiglet import Figlet
 
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
+
+def print_banner():
+    custom_fig = Figlet(font='slant')
+    print(custom_fig.renderText('Automated NLP-Docs-Scanner'))
 
 def clean_html(documentation: str) -> str:
     # Removes any HTML tags from the documentation
@@ -120,7 +125,7 @@ def suggest_improvements(documentation: str) -> List[Tuple[str, str]]:
             with open("terminology_dict.txt", "r") as f:
                 terms_dict = json.load(f)
         except FileNotFoundError:
-            print("\033[1;31;47mTerminology dictionary file not found.\033[0m")
+            # print("\033[1;31;47mTerminology dictionary file not found.\033[0m")
             return suggestions
         except json.decoder.JSONDecodeError as e:
             print("\033[1;31;47mError loading terminology dictionary file: {}\033[0m".format(e))
@@ -184,6 +189,7 @@ def scan_all_documentations(root_dir: str):
     return scores
 
 def main():
+    print_banner()
     root_dir = '/path/'
     scores = scan_all_documentations(root_dir)
     with open("output.txt", "w") as file:
