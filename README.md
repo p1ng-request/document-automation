@@ -3,6 +3,11 @@
 
 [broken-links-checker.py](https://github.com/p1ng-request/document-automation/blob/main/broken-links-checker.py): A Python script to scan broken links from a given web domain.
 
+:sparkles::sparkles:[ml-docs-scanner.py](https://github.com/p1ng-request/document-automation/blob/main/ml-docs-scanner.py):sparkles::sparkles:: The udpate version of NLP Docs Scanner.
++ Using machine learning techniques to train models on the cleaned data, make predictions on the data, score the documentation based on the criteria you specified.
++ Use supervised learning techniques to train a model to predict the quality of a document based on a set of labeled examples. For example, you can use grammatical error correction models, spell checker models, readability metrics such as the Flesch-Kincaid readability test, sentiment analysis models to measure the objectivity and tone of a document.
++ (Not Open Sourced) Use GPT-3 to check for consistency in style, tone, and terminology throughout the text, and give better readability scores.
+
 [nlp-docs-scanner.py](https://github.com/p1ng-request/document-automation/blob/main/nlp-docs-scanner.py): Automated Documentation Scanner. Features:
 + Scan all .md files in a given directory and all the sub-directories and use natural language processing(NLP) techniques to determine complicated words by breaking down the text into individual sentences.
 + Grammar and Spelling checker.
@@ -29,5 +34,3 @@
 ## Install dependenceis:
 pip3 install nltk textstat markdown textblob language-tool-python pyfiglet
 ```
-
-[ml-docs-scanner.py](https://github.com/p1ng-request/document-automation/blob/main/ml-docs-scanner.py): (Under construction)
