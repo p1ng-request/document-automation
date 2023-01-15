@@ -125,6 +125,7 @@ if __name__ == '__main__':
     documents = []
     labels = []
     for file in md_files:
+        print("\033[1;33;47m Processing document: {} \033[0m".format(os.path.basename(file)))
         with open(file, "r") as f:
             contents = f.read()
         # Get the label of the document, you need to set it based on your use case.
