@@ -37,3 +37,7 @@ pip3 install nltk textstat markdown textblob language-tool-python pyfiglet textb
 }
 ```
 > Note 2: Grammar check, spelling check & clearity check on a word-based level proven to be unreliable for generating too many false positives. Best pracitce: use grammarly instead.
+
+## Documentation best practices 📚
+
+[Image processing](https://github.com/p1ng-request/document-automation/blob/main/best-practices/image-processing.md)
