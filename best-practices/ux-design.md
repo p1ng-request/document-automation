@@ -1,4 +1,4 @@
-# UX Design Handbook for Documentation Engineers
+# UX Design Guide for Documentation Engineers
 
 ## 技术文档的内容体验设计方法 | Five Elements of UX Design for Docs
 
