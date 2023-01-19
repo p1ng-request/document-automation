@@ -1,5 +1,3 @@
-# Commonly used best practices
-
 ## Compress an image
 ```bash
 convert -strip -interlace Plane -resize 800x600 -gaussian-blur 0.05 -quality 85% source.png result.webp
