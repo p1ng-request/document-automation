@@ -6,6 +6,8 @@
 
 [UX Design Handbook for Documentation Engineers](https://github.com/p1ng-request/document-automation/blob/main/best-practices/ux-design.md)
 
+[Documentation Style Guide](https://github.com/p1ng-request/document-automation/blob/main/best-practices/style-guide.md)
+
 ## Something I have been working on 🎯
 
 [broken-links-checker.py](https://github.com/p1ng-request/document-automation/blob/main/broken-links-checker.py): A Python script to scan broken links from a given web domain.
