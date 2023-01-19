@@ -4,7 +4,7 @@
 [broken-links-checker.py](https://github.com/p1ng-request/document-automation/blob/main/broken-links-checker.py): A Python script to scan broken links from a given web domain.
 
 [translate.py](https://github.com/p1ng-request/document-automation/blob/main/translate.py): Translate documentations (.md files) to destined language.
-+ This pipeline is a high-performance neural machine translation system, which is trained on a diverse range of parallel texts from the internet and is able to translate between any pair of languages from the OPUS corpus.
++ This pipeline uses a high-performance Neural Machine Translation (NMT) system, which is trained on a diverse range of parallel texts from the internet and is able to translate between any pair of languages from the OPUS corpus.
 + (Optional) Automatically push & commit codes to GitHub, fully-automate the documentation publish workflow.
 
 :sparkles::sparkles:[ml-docs-scanner.py](https://github.com/p1ng-request/document-automation/blob/main/ml-docs-scanner.py):sparkles::sparkles:: The udpated version of NLP Docs Scanner.
