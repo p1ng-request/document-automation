@@ -58,3 +58,7 @@ Data Analystics: Google Analytics is the one stop shop solution for this step. I
 + Create a terminlogy list
 + Create writing samples (tempaltes) for content enforcement
 + *Use Machine Learning, Deep Learning & Artificial Intelligence Technologies for automted content workflow*
+
+## References
+
+https://www.codecademy.com/resources/docs/uiux/five-elements-of-ux-design
