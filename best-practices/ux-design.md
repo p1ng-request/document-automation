@@ -42,15 +42,11 @@ Data Analystics: Google Analytics is the one stop shop solution for this step. I
 + Engeagment time
 + Traffic source
 + Country
++ Top viewed pages
++ CTR
++ Bounce rate
 + User retention
 + User demographic
-+ Top viewed pages
-Combinning with other SEO tools such as ahrefs & SEM rush, you can gether more data for:
-+ Anchor words
-+ Keywords
-+ Google ranking
-+ Domain ranking/Url Ranking
-+ Backlinks
 + etc.
 
 ### Perform User tests
