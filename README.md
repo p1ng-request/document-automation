@@ -1,4 +1,11 @@
 ![Banner](https://raw.githubusercontent.com/p1ng-request/p1ng-request/main/banner.gif)
+
+## Documentation best practices 📚
+
+[Image processing](https://github.com/p1ng-request/document-automation/blob/main/best-practices/image-processing.md)
+
+[UX Design Handbook for Documentation Engineers](https://github.com/p1ng-request/document-automation/blob/main/best-practices/ux-design.md)
+
 ## Something I have been working on 🎯
 
 [broken-links-checker.py](https://github.com/p1ng-request/document-automation/blob/main/broken-links-checker.py): A Python script to scan broken links from a given web domain.
@@ -37,7 +44,3 @@ pip3 install nltk textstat markdown textblob language-tool-python pyfiglet textb
 }
 ```
 > Note 2: Grammar check, spelling check & clearity check on a word-based level proven to be unreliable for generating too many false positives. Best pracitce: use grammarly instead.
-
-## Documentation best practices 📚
-
-[Image processing](https://github.com/p1ng-request/document-automation/blob/main/best-practices/image-processing.md)
