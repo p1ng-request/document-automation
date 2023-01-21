@@ -17,6 +17,7 @@ from textblob import TextBlob
 
 nltk.download('averaged_perceptron_tagger')
 nltk.download('maxent_ne_chunker')
+nltk.download('vader_lexicon')
 
 def print_banner():
     custom_fig = Figlet(font='slant')
