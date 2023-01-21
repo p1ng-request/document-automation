@@ -19,6 +19,13 @@
 :sparkles::sparkles:[ml-docs-scanner.py](https://github.com/p1ng-request/document-automation/blob/main/ml-docs-scanner.py):sparkles::sparkles:: The udpated version of NLP Docs Scanner.
 + Using machine learning techniques to train models on the cleaned data, make predictions on the data, score the documentation based on the criteria you specified.
 + Use supervised learning techniques to train a model to predict the quality of a document based on a set of labeled examples. For example, you can use grammatical error correction models, spell checker models, readability metrics such as the Flesch-Kincaid readability test, sentiment analysis models to measure the objectivity and tone of a document.
++ Customized `ignore_list.txt`. Sample:
+```json
+{
+    "words": ["ignored_word1", "ignored_word2", "ignored_word3"],
+    "phrases": ["ignored phrase 1", "ignored phrase 2"]
+}
+```
 + (Not Open Sourced) Utilize AI models to check for consistency and coherence in style, tone, and terminology throughout the text, and give improved readability scores.
 + Screenshot:
 ![machine learning scanner screenshot](https://github.com/p1ng-request/document-automation/blob/main/screenshot.png?raw=true)
