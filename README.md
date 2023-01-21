@@ -21,10 +21,7 @@
 + Use supervised learning techniques to train a model to predict the quality of a document based on a set of labeled examples. For example, you can use grammatical error correction models, spell checker models, readability metrics such as the Flesch-Kincaid readability test, sentiment analysis models to measure the objectivity and tone of a document.
 + Customized `ignore_list.txt`. Sample:
 ```json
-{
-    "words": ["ignored_word1", "ignored_word2", "ignored_word3"],
-    "phrases": ["ignored phrase 1", "ignored phrase 2"]
-}
+["ignored_word1", "ignored_phrase1", "ignored_word2", "ignored_phrase2", ... ]
 ```
 + (Not Open Sourced) Utilize AI models to check for consistency and coherence in style, tone, and terminology throughout the text, and give improved readability scores.
 + Screenshot:
