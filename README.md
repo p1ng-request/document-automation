@@ -23,7 +23,7 @@
 ```json
 ["ignored_word1", "ignored_phrase1", "ignored_word2", "ignored_phrase2", ... ]
 ```
-+ (Not Open Sourced) Utilize AI models to check for consistency and coherence in style, tone, and terminology throughout the text, and give improved readability scores.
++ Utilize transformer-based language models to check for consistency and coherence in style, tone, and terminology throughout the text, and give improved readability scores.
 + Screenshot:
 ![machine learning scanner screenshot](https://github.com/p1ng-request/document-automation/blob/main/screenshot.png?raw=true)
 + Dependenceis:
