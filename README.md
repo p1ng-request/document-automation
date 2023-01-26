@@ -2,7 +2,7 @@
 
 ## Documentation best practices 📚
 
-[Image processing](https://github.com/p1ng-request/document-automation/blob/main/best-practices/image-processing.md)
+[Best Practices for Image processing](https://github.com/p1ng-request/document-automation/blob/main/best-practices/image-processing.md)
 
 [UX Design Handbook for Documentation Engineers](https://github.com/p1ng-request/document-automation/blob/main/best-practices/ux-design.md)
 
