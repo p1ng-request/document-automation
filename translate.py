@@ -12,14 +12,14 @@ translator = pipeline("translation_en_to_zh", model="Helsinki-NLP/opus-mt-en-zh"
 # Iterate through the files in the source directory
 if not os.path.exists(target_dir):
     os.makedirs(target_dir)
-
-for root, dirs, files in os.walk(source_dir):
-    for file in files:
-        if file.endswith(".md"):
-            print(f'Processing file {file}')
-            with open(os.path.join(root, file), "r") as f:
-                source_text = f.read()
-            
+    
+for file in os.listdir(source_dir):
+    if file.endswith(".md"):
+        file_path = os.path.join(source_dir, file)
+        print(f'Processing file {file}')
+        with open(file_path, "r") as f:
+            source_text = f.read()
+        
         # Split the text into smaller parts
         parts = source_text.split("\n")
         
