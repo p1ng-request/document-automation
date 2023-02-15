@@ -1,3 +1,8 @@
+## Resize an image
+```bash
+convert 0.png -resize 800x 1.png
+```
+
 ## Compress an image
 ```bash
 convert -strip -interlace Plane -resize 800x600 -gaussian-blur 0.05 -quality 85% 0.png 1.png
@@ -5,7 +10,7 @@ convert -strip -interlace Plane -resize 800x600 -gaussian-blur 0.05 -quality 85%
 
 ## Convert a video to WebP/GIF
 ```bash
-ffmpeg -filter_complex "[0:v] fps=12,scale=w=540:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" -i 0.mov 1.webp
+ffmpeg -filter_complex "[0:v] fps=12,scale=w=800:h=-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" -i 0.mov 1.webp
 ```
 
 ## Reduce Video Size
